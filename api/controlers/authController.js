@@ -1,15 +1,18 @@
-const { default: User } = require("../model/userModel");
+const  User  = require("../model/userModel");
+const bcrypt = require('bcrypt')
+
 const catchError = require("../utlis/error");
 
-const authControler = {
-  signup: async (req, res, next) => {
+const authControler =  {
+  signup: async (req, res,next) => {
     const { username, email, password } = req.body;
 
     const user = await User.find({email});
 
-    if(user)  return next(catchError(402, "User already Exist"));
-
-    const hashedPassword = bcryptjs.hashSync(password, 12);
+    if (user.length > 0) {
+      return next(catchError(402, "User already exists"));
+    }
+    const hashedPassword = bcrypt.hashSync(password, 12);
     const newUser = new User({ username, email, password: hashedPassword });
     try {
       await newUser.save();
