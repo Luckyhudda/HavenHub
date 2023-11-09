@@ -1,7 +1,10 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require('cors');
 const mongoose = require("mongoose");
 const app = express();
+app.use(express.json())
+// app.use(cors());
 const authRouter = require('./routes/authRoutes')
 
 mongoose
@@ -16,7 +19,7 @@ mongoose
   // ROUTES....
   app.use("/api/auth", authRouter);
 
-app.listen(3000, () => {
+app.listen(2001, () => {
   console.log("server  Started...");
 });
 
