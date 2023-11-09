@@ -1,6 +1,6 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
 
 mongoose
@@ -12,12 +12,17 @@ mongoose
     console.log("error in DB connection");
   });
 
+app.listen(3000, () => {
+  console.log("server  Started...");
+});
 
 
-
-
-
-
-app.listen(3000, () =>{
-    console.log('server  Started...')
-})
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  return res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});
